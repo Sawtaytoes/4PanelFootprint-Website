@@ -1,0 +1,23 @@
+## Project Files ##
+~res
+
+## Bower ##
+bower_components
+
+## Network Info ##
+network-*
+
+## Node ##
+.env
+includes/node-env.coffee
+node_modules
+
+## Public ##
+web/*
+!web/favicons
+
+## Misc ##
+.DS_Store
+[Tt]humbs.db
+*.dmp
+._*
