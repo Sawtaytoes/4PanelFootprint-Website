@@ -1,4 +1,4 @@
-# Tabletop Helper Website
+# 4-Panel Footprint Website
 
 <!-- WEBSITE DOESN'T EXIST YET -->
 Source code for [example.com](http://example.com).
@@ -17,12 +17,12 @@ Source code for [example.com](http://example.com).
 
 If you have SSH keys, use this one:
 ```shell
-git clone git@github.com:Sawtaytoes/Tabletop-Helper.git -b develop
+git clone git@github.com:Sawtaytoes/4panelfootprint-website.git -b develop
 ```
 
 Otherwise, use this one and change YOUR_USERNAME to your BitBucket username:
 ```shell
-git clone https://github.com/Sawtaytoes/Tabletop-Helper.git -b develop
+git clone https://github.com/Sawtaytoes/4panelfootprint-website.git -b develop
 ```
 
 
@@ -105,14 +105,32 @@ git push heroku master
 
 #### Start the Server
 
+Start a single server for testing:
+
 ```shell
 bash server.sh
 ```
+
+Start a cluster of 3 servers for load balancing in production:
+
+```shell
+bash server.sh 3
+```
+
+The number 3 can be replaced with any number. The default is 0: equal to the number of CPU cores.
 
 #### Update from Git and Restart
 
 ```shell
 bash update.sh
+```
+
+If you update the update.sh file, make sure to run `git pull` prior to running the update script.
+
+#### Stop the Server
+
+```shell
+bash stop-server.sh
 ```
 
 ### Create SSL Cert
