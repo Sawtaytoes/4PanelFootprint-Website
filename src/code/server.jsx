@@ -6,11 +6,15 @@ import { compose, createStore } from 'redux'
 import createMemoryHistory from 'history/lib/createMemoryHistory'
 
 // Polyfills
-import './utilities/polyfills'
-import renderFullPage from './utilities/render-full-page'
+import 'utilities/polyfills'
+import { getInitialState } from 'utilities/initial-state'
+import renderFullPage from 'utilities/render-full-page'
+
+// Actions
+import { updatePageMeta } from 'actions'
 
 // Reducers & Routes
-import rootReducer from './reducers'
+import rootReducer from 'reducers'
 import routes from './routes'
 
 /*
@@ -19,7 +23,7 @@ import routes from './routes'
  * and pass it into the Router.run function.
  */
 module.exports = function render(req, res) {
-	const initialState = {}
+	const initialState = getInitialState()
 
 	const history = createMemoryHistory()
 	const store = compose()(createStore)(rootReducer, initialState)
@@ -35,6 +39,8 @@ module.exports = function render(req, res) {
 					<RoutingContext {...renderProps} />
 				</Provider>
 			)
+
+			store.dispatch(updatePageMeta(req.originalUrl))
 
 			const finalState = store.getState()
 			const renderedPage = renderFullPage(renderedContent, finalState)
