@@ -71,7 +71,7 @@ export default (state = {}, action) => {
 			previousPath = state.currentPath,
 			pathChanged = currentPath !== previousPath
 
-		updatePageMeta(path)
+		updatePageMeta(currentPath)
 		pathChanged && updateScrollPosition()
 
 		return {
