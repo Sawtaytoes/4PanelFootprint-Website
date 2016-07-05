@@ -8,17 +8,17 @@ secureServer = (app) ->
 	helmet = require 'helmet'
 
 	app
-		.enable 'trust proxy'
-		.use express_enforces_ssl()
-		.use helmet()
-		.use helmet.hidePoweredBy()
-		# .use helmet.csp
-		# 	directives:
-		# 		defaultSrc: ['self']
-		# 		scriptSrc: ['self', 'www.google-analytics.com', 'ajax.googleapis.com']
-		# 		sandbox: ['allow-forms', 'allow-scripts']
-		# 	reportOnly: false
-		# 	setAllHeaders: false
+	.enable 'trust proxy'
+	.use express_enforces_ssl()
+	.use helmet()
+	.use helmet.hidePoweredBy()
+	# .use helmet.csp
+	# 	directives:
+	# 		defaultSrc: ['self']
+	# 		scriptSrc: ['self', 'www.google-analytics.com', 'ajax.googleapis.com']
+	# 		sandbox: ['allow-forms', 'allow-scripts']
+	# 	reportOnly: false
+	# 	setAllHeaders: false
 
 sendEmail = (req, res) ->
 	require(__includes + 'send-email')(req.body, res)
@@ -31,12 +31,12 @@ module.exports = do ->
 	__secure and secureServer app
 
 	app
-		.use compression()
-		.use express.static __base + paths.root.dest
-		.use bodyParser.json()
-		.use bodyParser.urlencoded extended: false
-		.post __sendEmailUri, sendEmail
-		.all '*', loadSite
-		.listen Number(__port), (err) ->
-			console.error err if err
-			console.info 'Web Server running on port', __port
+	.use compression()
+	.use express.static __base + paths.root.dest
+	.use bodyParser.json()
+	.use bodyParser.urlencoded extended: false
+	.post __sendEmailUri, sendEmail
+	.all '*', loadSite
+	.listen Number(__port), (err) ->
+		console.error err if err
+		console.info 'Web Server running on port', __port
