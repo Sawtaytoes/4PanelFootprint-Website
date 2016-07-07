@@ -43,11 +43,11 @@ module.exports =
 	# 		# require.ensure [], (require) =>
 	# 		cb null, require './views/pulsen'
 	# ,
-	# 	path: 'locations'
-	# 	getComponent: (location, cb) =>
-	# 		# require.ensure [], (require) =>
-	# 		cb null, require './views/locations'
-	# ,
+		path: 'locations'
+		getComponent: (location, cb) =>
+			# require.ensure [], (require) =>
+			cb null, require './views/locations'
+	,
 	# 	path: 'pictures'
 	# 	getComponent: (location, cb) =>
 	# 		# require.ensure [], (require) =>
