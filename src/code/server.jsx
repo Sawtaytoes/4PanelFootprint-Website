@@ -1,6 +1,6 @@
 import React from 'react'
 import { renderToString } from 'react-dom/server'
-import { RoutingContext, match } from 'react-router'
+import { RouterContext, match, memoryHistory } from 'react-router'
 import { Provider } from 'react-redux'
 import { compose, createStore } from 'redux'
 import createMemoryHistory from 'history/lib/createMemoryHistory'
@@ -36,7 +36,7 @@ module.exports = function render(req, res) {
 		} else if (renderProps) {
 			const renderedContent = renderToString(
 				<Provider store={store}>
-					<RoutingContext {...renderProps} />
+					<RouterContext history={memoryHistory} {...renderProps} />
 				</Provider>
 			)
 

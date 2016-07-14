@@ -1,60 +1,68 @@
 `import { Master } from './layouts'`
+`import getSearchQueryParameters from 'utilities/search-query-parameters'`
 
-redirectRoute = (route, nextState, replaceState) =>
-	replaceState null, route
+redirectRoute = (route, nextState, replace) =>
+	replace route
 
 module.exports =
-	component: Master
 	path: '/'
-	onEnter: (nextState, replaceState) =>
-		pageId = nextState.location.query.page_id
-		catId = nextState.location.query.cat
+	component: Master
+	onEnter: ({ location }, replace) =>
 
-		switch pageId
-			when '36' then replaceState null, '/contact'
-			when '340' then replaceState null, '/pulsen'
-			when '691' then replaceState null, '/pulsen'
-			when '29' then replaceState null, '/locations'
-			when '310' then replaceState null, '/info'
-			when '336' then replaceState null, '/info'
+		# Redirects
+		queryParameters = getSearchQueryParameters(location.search)
 
-		switch catId
-			when '7' then replaceState null, '/pictures'
-			when '9' then replaceState null, '/pictures'
+		pageId = queryParameters.page_id
+		catId = queryParameters.cat
 
-		if nextState.location.pathname == '/'
-			replaceState null, '/info'
+		if pageId
+			switch pageId
+				when '36' then replace '/contact'
+				when '340' then replace '/pulsen'
+				when '691' then replace '/pulsen'
+				when '29' then replace '/locations'
+				when '310' then replace '/info'
+				when '336' then replace '/info'
+			return
+
+		if catId
+			replace '/pictures'
+			return
+
+		switch location.pathname
+			when '/' then replace '/info'
+			when '/location' then replace '/locations'
 
 	childRoutes: [
 
 		# Routes
 		path: 'info'
 		getComponent: (location, cb) =>
-			# require.ensure [], (require) =>
-			cb null, require './views/info'
+			require.ensure [], (require) =>
+				cb null, require './views/info'
 	,
 		path: 'contact'
 		getComponent: (location, cb) =>
-			# require.ensure [], (require) =>
-			cb null, require './views/contact'
+			require.ensure [], (require) =>
+				cb null, require './views/contact'
 	,
-	# 	path: 'pulsen'
-	# 	getComponent: (location, cb) =>
-	# 		# require.ensure [], (require) =>
-	# 		cb null, require './views/pulsen'
-	# ,
-	# 	path: 'locations'
-	# 	getComponent: (location, cb) =>
-	# 		# require.ensure [], (require) =>
-	# 		cb null, require './views/locations'
-	# ,
-	# 	path: 'pictures'
-	# 	getComponent: (location, cb) =>
-	# 		# require.ensure [], (require) =>
-	# 		cb null, require './views/pictures'
-	# ,
+		path: 'pulsen'
+		getComponent: (location, cb) =>
+			require.ensure [], (require) =>
+				cb null, require './views/pulsen'
+	,
+		path: 'locations'
+		getComponent: (location, cb) =>
+			require.ensure [], (require) =>
+				cb null, require './views/locations'
+	,
+		path: 'pictures'
+		getComponent: (location, cb) =>
+			require.ensure [], (require) =>
+				cb null, require './views/pictures'
+	,
 		path: '*'
 		getComponent: (location, cb) =>
-			# require.ensure [], (require) =>
-			cb null, require './views/404'
+			require.ensure [], (require) =>
+				cb null, require './views/404'
 	]

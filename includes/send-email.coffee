@@ -30,8 +30,7 @@ module.exports = (reqBody, res) ->
 		return
 
 	# Set `To:` Email Address
-	switch reqBody.reason
-		else mailTo = 'Tabletop Helper Inquiry <me@example.com>'
+	mailTo = 'Tabletop Helper Inquiry <me@example.com>' if reqBody.reason
 
 	# Configure Mail Options
 	mailOptions =
