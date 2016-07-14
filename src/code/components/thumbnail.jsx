@@ -12,14 +12,13 @@ class Thumbnail extends Component {
 	// static propTypes = {};
 
 	renderImg() {
-		let size = Math.random() * 200
+		let size = 250
 		return <img src={`http://placehold.it/${size}x${size}`} />
 	}
 
 	render() { return (
 		<figure className="thumbnail">
-			{/*this.renderImg()*/}
-			<img src="http://placehold.it/250x250" />
+			{this.renderImg()}
 			<figcaption>
 				DOES THIS WORK?
 			</figcaption>
