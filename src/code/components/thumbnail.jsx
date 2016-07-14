@@ -13,15 +13,17 @@ class Thumbnail extends Component {
 
 	renderImg() {
 		let size = 250
-		return <img src={`http://placehold.it/${size}x${size}`} />
+		return <img src={this.props.src || `http://placehold.it/${size}x${size}`} />
 	}
+
+	renderCaption() { return (
+		<figcaption>{this.props.caption}</figcaption>
+	)}
 
 	render() { return (
 		<figure className="thumbnail">
 			{this.renderImg()}
-			<figcaption>
-				DOES THIS WORK?
-			</figcaption>
+			{this.props.caption && this.renderCaption()}
 		</figure>
 	)}
 }
