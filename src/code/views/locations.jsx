@@ -37,7 +37,7 @@ class Locations extends Component {
 				Pricing estimates depend on your location, number of attendees, length of time, and amount of equipment required. Anything requiring more than one station of Pulse Radar will need additional preparation steps on our part. We have locations all over the Midwest and are able to attend larger events outside of our region if requested at competitive prices.
 			</p>
 		</div>
-		)}
+	)}
 }
 
 module.exports = Locations
