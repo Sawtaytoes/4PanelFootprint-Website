@@ -82,6 +82,12 @@ Start the SMTP server using `maildev`.
 ### Development: Local
 
 ```shell
+bash local.sh
+```
+
+or
+
+```shell
 coffee index.coffee
 ```
 
