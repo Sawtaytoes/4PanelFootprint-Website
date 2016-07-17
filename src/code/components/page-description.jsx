@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 
-export default class ItemDescription extends Component {
+export default class PageDescription extends Component {
 	static propTypes = {
 		containerClass: PropTypes.string,
 		title: PropTypes.string.isRequired,
