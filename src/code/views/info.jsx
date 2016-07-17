@@ -2,34 +2,6 @@ import React, { Component } from 'react'
 import Thumbnail from 'components/thumbnail'
 
 class Info extends Component {
-	constructor() {
-		super()
-		console.log(this);
-		this.state = {
-			katieText: '',
-			kevinText: ''
-		}
-	}
-
-	handleClick() {
-		this.setState({
-			katieText: 'I clicked the Katie!'
-		})
-	}
-
-	handleClick2() {
-		this.setState({
-			kevinText: 'I clicked the Kevin!'
-		})
-	}
-
-	handleClick3() {
-		this.setState({
-			katieText: '',
-			kevinText: ''
-		})
-	}
-
 	render() { return (
 		<div>
 			<h1>Information</h1>
@@ -59,11 +31,6 @@ class Info extends Component {
 			<div>
 				<img src="http://placehold.it/500x250" />
 			</div>
-			<button onClick={this.handleClick.bind(this)}>Katie</button>
-			<p>{this.state.katieText}</p>
-			<button onClick={this.handleClick2.bind(this)}>Kevin</button>
-			<p>{this.state.kevinText}</p>
-			<button onClick={this.handleClick3.bind(this)}>NO!</button>
 		</div>
 	)}
 }
