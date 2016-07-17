@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
-import Thumbnail from 'components/thumbnail'
+import PageDescription from 'components/page-description'
+import ThumbnailGallery from 'components/thumbnail-gallery'
+import thumbnails from 'content/thumbnails'
 
 class Pictures extends Component {
 	render() { return (
 		<div>
-			<h1>Pictures</h1>
-			<Thumbnail caption="kevin is the bestest"></Thumbnail>
+			<PageDescription title="Pictures" />
+			<ThumbnailGallery {...thumbnails} />
 		</div>
-		)}
+	)}
 }
 
 module.exports = Pictures
