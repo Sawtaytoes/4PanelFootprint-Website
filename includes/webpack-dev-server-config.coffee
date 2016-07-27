@@ -8,8 +8,8 @@ webpackServerConfig =
 	historyApiFallback: true
 	hot: true
 	https: __secure
-	# cert: fs.readFileSync('./conf/cert.pem')
-	# key: fs.readFileSync('./conf/key.pem')
+	cert: __secure and fs.readFileSync('./conf/cert.pem')
+	key: __secure and fs.readFileSync('./conf/key.pem')
 	progress: true
 	publicPath: webpackClientConfig.output.publicPath
 	stats: colors: true

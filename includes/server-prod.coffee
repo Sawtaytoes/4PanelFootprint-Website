@@ -1,24 +1,22 @@
 bodyParser = require 'body-parser'
 compression = require 'compression'
 express = require 'express'
+slashes = require 'connect-slashes'
+fs = require 'fs'
 paths = require __includes + 'paths'
 
+helmet = require 'helmet'
 secureServer = (app) ->
-	express_enforces_ssl = require 'express-enforces-ssl'
-	helmet = require 'helmet'
+	https = require 'https'
+	enforce = require 'express-sslify'
 
 	app
-	.enable 'trust proxy'
-	.use express_enforces_ssl()
-	.use helmet()
-	.use helmet.hidePoweredBy()
-	# .use helmet.csp
-	# 	directives:
-	# 		defaultSrc: ['self']
-	# 		scriptSrc: ['self', 'www.google-analytics.com', 'ajax.googleapis.com']
-	# 		sandbox: ['allow-forms', 'allow-scripts']
-	# 	reportOnly: false
-	# 	setAllHeaders: false
+	.use enforce.HTTPS trustProtoHeader: true
+
+	return https.createServer
+		cert: fs.readFileSync('./conf/cert.pem')
+		key: fs.readFileSync('./conf/key.pem')
+	, app
 
 sendEmail = (req, res) ->
 	require(__includes + 'send-email')(req.body, res)
@@ -28,15 +26,28 @@ loadSite = (req, res) ->
 
 module.exports = do ->
 	app = express()
-	__secure and secureServer app
 
 	app
+	.use express.static __base + paths.root.dest, redirect: false
+	.use slashes false
+	.use helmet()
+	#.use helmet.csp
+	#	directives:
+	#		defaultSrc: ['self']
+	#		scriptSrc: ['self', 'www.google-analytics.com', 'ajax.googleapis.com']
+	#		sandbox: ['allow-forms', 'allow-scripts']
+	#	reportOnly: false
+	#	setAllHeaders: false
 	.use compression()
-	.use express.static __base + paths.root.dest
 	.use bodyParser.json()
 	.use bodyParser.urlencoded extended: false
+	.disable 'x-powered-by'
 	.post __sendEmailUri, sendEmail
 	.all '*', loadSite
+
+	server = if __secure then secureServer app else app
+
+	server
 	.listen Number(__port), (err) ->
 		console.error err if err
 		console.info 'Web Server running on port', __port

@@ -1,5 +1,6 @@
 bodyParser = require 'body-parser'
 express = require 'express'
+slashes = require 'connect-slashes'
 paths = require __includes + 'paths'
 
 webpack = require 'webpack'
@@ -23,7 +24,8 @@ module.exports = do ->
 		.listen Number(__port), __hostname, onBuild.bind null, '[webpack-dev-server]'
 
 	express()
-	.use express.static __base + paths.root.dest
+	.use express.static __base + paths.root.dest, redirect: false
+	.use slashes false
 	.use bodyParser.json()
 	.use bodyParser.urlencoded extended: false
 	.post __sendEmailUri, sendEmail
