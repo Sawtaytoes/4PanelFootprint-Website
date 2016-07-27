@@ -1,5 +1,4 @@
 `import { Master } from './layouts'`
-`import getSearchQueryParameters from 'utilities/search-query-parameters'`
 
 redirectRoute = (route, nextState, replace) =>
 	replace route
@@ -8,58 +7,91 @@ module.exports =
 	path: '/'
 	component: Master
 	onEnter: ({ location }, replace) =>
-
-		# Redirects
-		queryParameters = getSearchQueryParameters(location.search)
-
-		pageId = queryParameters.page_id
-		catId = queryParameters.cat
-
-		if pageId
-			switch pageId
-				when '36' then replace '/contact'
-				when '340' then replace '/pulsen'
-				when '691' then replace '/pulsen'
-				when '29' then replace '/locations'
-				when '310' then replace '/info'
-				when '336' then replace '/info'
-			return
-
-		if catId
-			replace '/pictures'
-			return
-
-		switch location.pathname
-			when '/' then replace '/info'
-			when '/location' then replace '/locations'
-
+		if location.pathname == '/'
+			replace '/game'
 	childRoutes: [
 
+		# Redirects
+		path: 'about'
+		onEnter: redirectRoute.bind null, '/game'
+	,
+		path: 'credits'
+		onEnter: redirectRoute.bind null, '/dev-team'
+	,
+		path: 'dancemats'
+		onEnter: redirectRoute.bind null, '/dance-pads'
+	,
+		path: 'dlc'
+		onEnter: redirectRoute.bind null, '/dlc/pulsen-souleye'
+	,
+		path: 'faqs'
+		onEnter: redirectRoute.bind null, '/faq'
+	,
+		path: 'manual'
+		onEnter: redirectRoute.bind null, '/faq'
+	,
+		path: 'media'
+		onEnter: redirectRoute.bind null, '/game'
+	,
+		path: 'news'
+		onEnter: redirectRoute.bind null, '/game'
+	,
+		path: 'press'
+		onEnter: redirectRoute.bind null, '/press-kit'
+	,
+		path: '**/'
+		onEnter: ({ location }, replace) =>
+			replace(location.pathname.slice 0, -1)
+	,
+
 		# Routes
-		path: 'info'
+		path: 'game'
 		getComponent: (location, cb) =>
 			require.ensure [], (require) =>
-				cb null, require './views/info'
+				cb null, require './views/game'
+	,
+		path: 'dlc'
+		childRoutes: [
+			path: 'pulsen-souleye'
+			getComponent: (location, cb) =>
+				require.ensure [], (require) =>
+					cb null, require './views/pulsen-souleye'
+		,
+			path: 'pulsen-community-hopscotch-mix'
+			getComponent: (location, cb) =>
+				require.ensure [], (require) =>
+					cb null, require './views/pulsen-community-hopscotch-mix'
+		]
+	,
+		path: 'dance-pads'
+		getComponent: (location, cb) =>
+			require.ensure [], (require) =>
+				cb null, require './views/dance-pads'
+	,
+		path: 'faq'
+		getComponent: (location, cb) =>
+			require.ensure [], (require) =>
+				cb null, require './views/faq'
+	,
+		path: 'dev-team'
+		getComponent: (location, cb) =>
+			require.ensure [], (require) =>
+				cb null, require './views/dev-team'
 	,
 		path: 'contact'
 		getComponent: (location, cb) =>
 			require.ensure [], (require) =>
 				cb null, require './views/contact'
 	,
-		path: 'pulsen'
+		path: 'press-kit'
 		getComponent: (location, cb) =>
 			require.ensure [], (require) =>
-				cb null, require './views/pulsen'
+				cb null, require './views/press-kit'
 	,
-		path: 'locations'
+		path: 'video-policy'
 		getComponent: (location, cb) =>
 			require.ensure [], (require) =>
-				cb null, require './views/locations'
-	,
-		path: 'pictures'
-		getComponent: (location, cb) =>
-			require.ensure [], (require) =>
-				cb null, require './views/pictures'
+				cb null, require './views/video-policy'
 	,
 		path: '*'
 		getComponent: (location, cb) =>
