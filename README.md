@@ -1,4 +1,5 @@
-# Ghadyani Framework for Webpack, React, and Redux
+# 4-Panel Footprint Website
+Source code for [4panelfootprint.com](https://4panelfootprint.com).
 
 ## Prerequisites
 
