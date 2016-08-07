@@ -20,7 +20,7 @@ class ThumbnailGallery extends Component {
 		this.props.thumbnails.map(this.renderThumbnail)
 	)}
 
-	render() { debugger; return (
+	render() { return (
 		<div className="thumbnail-gallery">
 			{this.props.thumbnails && this.renderThumbnails()}
 		</div>
