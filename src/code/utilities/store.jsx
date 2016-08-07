@@ -3,6 +3,7 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import createBrowserHistory from 'history/lib/createBrowserHistory'
 
 import rootReducer from 'reducers'
+import { CLOSE_MENU } from 'actions'
 import { getInitialState } from 'utilities/initial-state'
 
 const initialState = getInitialState()
@@ -15,7 +16,10 @@ if (process.env.NODE_ENV === `development`) {
 		require('redux-thunk').default,
 		require(`redux-logger`)({
 			diff: true,
-			logErrors: true
+			logErrors: true,
+			predicate: (getState, action) =>
+				action.type !== CLOSE_MENU
+				|| getState().collapsibleMenu.menuIsOpen
 		})
 	)
 }

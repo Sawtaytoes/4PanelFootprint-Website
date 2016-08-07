@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux'
-import { routeReducer } from 'redux-simple-router'
+import { routerReducer } from 'react-router-redux'
 
-import collapsibleMenu from './collapsible-menu'
-import locationChange from './location-change'
+import collapsibleMenu from 'reducers/collapsible-menu'
+import locationChange from 'reducers/location-change'
 
 export default combineReducers({
 	collapsibleMenu,
 	locationChange,
-	routing: routeReducer
+	routing: routerReducer,
 })

@@ -1,14 +1,21 @@
 `import { Master } from './layouts'`
 
-redirectRoute = (route, nextState, replaceState) =>
-	replaceState null, route
+removeTrailingSlash = (replace) ->
+	lastCharPos = location.pathname.length - 1
+	lastChar = location.pathname[lastCharPos]
+	replace(location.pathname.slice 0, -1) if lastChar == '/'
+	return
 
 module.exports =
-	component: Master
 	path: '/'
-	onEnter: (nextState, replaceState) =>
+	component: Master
+	onEnter: ({ location }, replace) =>
+
+		## Redirects
+		return if (removeTrailingSlash(replace))
+
 		queryParams = {}
-		nextState.location.search
+		location.search
 			.replace '?', ''
 			.split '&'
 			.forEach (query) =>
@@ -18,28 +25,22 @@ module.exports =
 		pageId = queryParams.page_id
 		catId = queryParams.cat
 
-		## Redirects
 		switch pageId
-			when '36' then replaceState null, '/contact'
-			when '340' then replaceState null, '/pulsen'
-			when '691' then replaceState null, '/pulsen'
-			when '29' then replaceState null, '/locations'
-			when '310' then replaceState null, '/info'
-			when '336' then replaceState null, '/info'
+			when '36' then return replace '/contact'
+			when '340' then return replace '/pulsen'
+			when '691' then return replace '/pulsen'
+			when '29' then return replace '/locations'
+			when '310' then return replace '/info'
+			when '336' then return replace '/info'
 
 		switch catId
-			when '7' then replaceState null, '/pictures'
-			when '9' then replaceState null, '/pictures'
+			when '7' then return replace '/pictures'
+			when '9' then return replace '/pictures'
 
-		if nextState.location.pathname == '/'
-			replaceState null, '/info'
+		if location.pathname == '/'
+			return replace '/info'
 
 	childRoutes: [
-
-		## Remove Trailing Slash
-		#path: '**/'
-		#onEnter: ({ location }, replace) =>
-		#	replace(location.pathname.slice 0, -1)
 
 		## Routes
 		path: 'info'

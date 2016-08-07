@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { pushPath } from 'redux-simple-router'
+import { Link } from 'react-router'
 
 // Components
 import PageDescription from 'components/page-description'
@@ -14,11 +13,6 @@ const styles = [
 ]
 
 class NoMatch extends Component {
-	handleGoBack(e) {
-		e.preventDefault()
-		this.props.pushPath(this.props.dispatch(pushPath('/info')))
-	}
-
 	render() { return (
 		<article>
 			<section className="bubble">
@@ -26,14 +20,11 @@ class NoMatch extends Component {
 					title="404"
 					subtitle="You're Trying to Get Somewhere That Doesn't Exist"
 				>
-					<button className="contact__field__input contact__send-button" title="Go back to the previous page" onClick={this.handleGoBack.bind(this)}>Go Back</button>
+					<Link className="contact__field__input contact__send-button" to="/info" title="Go to landing page">Go Back</Link>
 				</PageDescription>
 			</section>
 		</article>
 	)}
 }
 
-module.exports = connect(
-	state => ({}),
-	dispatch => ({ dispatch, pushPath })
-)(stylesHelper(NoMatch, styles))
+module.exports = stylesHelper(NoMatch, styles)

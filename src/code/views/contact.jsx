@@ -140,7 +140,7 @@ class Contact extends Component {
 		<div>
 			<div className="contact__fields">
 				<label className="contact__field contact__field--spacing">
-					<input className="contact__field__input js-contact-validate" type="text" name="name" placeholder="Name" data-pattern="^([\w\d\s-\.]{2,64})$" required autofocus />
+					<input className="contact__field__input js-contact-validate" type="text" name="name" placeholder="Name" data-pattern="^([\w\d\s-\.]{2,64})$" required autoFocus />
 					<small className="contact__field__error js-contact-error">Please provide a name between 2 and 64 characters.</small>
 				</label>
 				<label className="contact__field contact__field--spacing">
