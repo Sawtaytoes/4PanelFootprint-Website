@@ -1,21 +1,34 @@
-import { compose, createStore } from 'redux'
-import { syncReduxAndRouter } from 'redux-simple-router'
-
-import rootReducer from 'reducers'
+import { compose, applyMiddleware, createStore } from 'redux'
+import { syncHistoryWithStore } from 'react-router-redux'
 import createBrowserHistory from 'history/lib/createBrowserHistory'
 
+import rootReducer from 'reducers'
 import { getInitialState } from 'utilities/initial-state'
 
-// Merge history with store
 const initialState = getInitialState()
 const history = createBrowserHistory()
-const store = compose()(window.devToolsExtension ? window.devToolsExtension()(createStore) : createStore)(rootReducer, initialState)
+
+let middlewares = []
+
+if (process.env.NODE_ENV === `development`) {
+	middlewares.push(
+		require('redux-thunk').default,
+		require(`redux-logger`)({
+			diff: true,
+			logErrors: true
+		})
+	)
+}
+
+const store = compose(applyMiddleware(...middlewares))
+	(window.devToolsExtension ? window.devToolsExtension()(createStore) : createStore)
+	(rootReducer, initialState)
 
 module.hot && module.hot.accept('reducers', () => {
 	store.replaceReducer(require('reducers'))
 })
 
-syncReduxAndRouter(history, store)
+syncHistoryWithStore(history, store)
 
 export {
 	history,

@@ -1,3 +1,5 @@
+import { htmlMeta } from 'utilities/render-full-page-extras'
+
 // Actions
 import { UPDATE_PAGE_META } from 'actions'
 
@@ -7,7 +9,7 @@ import navItems from 'content/nav-items'
 let pageMeta = {}
 
 const changePageMetaOnLinkMatch = (item, path) => {
-	let re = new RegExp('(' + item.to + ')'),
+	let re = new RegExp('^' + item.to + '$'),
 		linkMatch = re.test(path)
 
 	if (linkMatch) {
@@ -43,13 +45,13 @@ function updatePageMeta(path) {
 	}
 
 	let { title, description } = pageMeta
-	title && (document.title = title + ' – 4-Panel Footprint')
+	title && (document.title = `${title}${htmlMeta.titlePostfix}`)
 	description && (document.querySelector('meta[name=description]').content = description)
 }
 
 function updateScrollPosition() {
 	if (typeof window !== 'undefined') {
-		window && window.scroll(0, 0)
+		window.scroll(0, 0)
 	}
 }
 
@@ -66,8 +68,8 @@ export default (state = {}, action) => {
 			description: pageMeta.description
 		}
 
-	case '@@router/UPDATE_PATH':
-		let currentPath = payload.path,
+	case '@@router/LOCATION_CHANGE':
+		let currentPath = payload.pathname,
 			previousPath = state.currentPath,
 			pathChanged = currentPath !== previousPath
 

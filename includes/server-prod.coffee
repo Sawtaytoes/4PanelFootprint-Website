@@ -1,5 +1,6 @@
 bodyParser = require 'body-parser'
 compression = require 'compression'
+config = require __includes + 'config-settings'
 express = require 'express'
 fs = require 'fs'
 paths = require __includes + 'paths'
@@ -27,8 +28,9 @@ module.exports = do ->
 	app = express()
 
 	app
-	.use express.static __base + paths.root.dest, redirect: false
+	.use compression()
 	.use helmet()
+	.use express.static __base + paths.root.dest, redirect: false
 	#.use helmet.csp
 	#	directives:
 	#		defaultSrc: ['self']
@@ -36,16 +38,15 @@ module.exports = do ->
 	#		sandbox: ['allow-forms', 'allow-scripts']
 	#	reportOnly: false
 	#	setAllHeaders: false
-	.use compression()
 	.use bodyParser.json()
 	.use bodyParser.urlencoded extended: false
 	.disable 'x-powered-by'
-	.post __sendEmailUri, sendEmail
+	.post config.getMailSendPath(), sendEmail
 	.all '*', loadSite
 
-	server = if __secure then secureServer app else app
+	server = if config.isSecure() then secureServer app else app
 
 	server
-	.listen Number(__port), (err) ->
+	.listen config.getPort(), (err) ->
 		console.error err if err
-		console.info 'Web Server running on port', __port
+		console.info 'Web Server running as', config.getServerUrl()

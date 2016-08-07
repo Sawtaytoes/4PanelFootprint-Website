@@ -1,4 +1,5 @@
 autoprefixer = require 'autoprefixer'
+config = require __includes + 'config-settings'
 path = require 'path'
 paths = require __includes + 'paths'
 webpack = require 'webpack'
@@ -6,13 +7,13 @@ webpack = require 'webpack'
 entryFile = './' + paths.code.src + 'client'
 
 p = (dir) ->
-	path.join(__base, dir)
+	path.join __base, dir
 
-codeFiles = p(paths.code.src)
-fontFiles = p(paths.assets.src + 'font/')
-imgFiles = p(paths.assets.src + 'img/')
-sassFiles = p(paths.assets.src + 'sass/')
-stylFiles = p(paths.assets.src + 'styl/')
+codeFiles = p paths.code.src
+fontFiles = p paths.assets.src + 'font/'
+imgFiles = p paths.assets.src + 'img/'
+sassFiles = p paths.assets.src + 'sass/'
+stylFiles = p paths.assets.src + 'styl/'
 
 module.exports =
 	cache: true
@@ -87,25 +88,33 @@ module.exports =
 			loader: 'file-loader'
 			# include: [fontFiles]
 		]
+	noInfo: true
 	output:
 		filename: 'bundle.js'
 		path: './web/'
 		pathinfo: false
 		publicPath: '/'
 	plugins: [
-		new webpack.DefinePlugin 'process.env.NODE_ENV': JSON.stringify __env
+		new webpack.DefinePlugin 'process.env.NODE_ENV': JSON.stringify config.getEnv()
 		new webpack.IgnorePlugin /^\.\/locale$/, [/moment$/]
 		new webpack.NoErrorsPlugin()
 		new webpack.optimize.AggressiveMergingPlugin()
+		new webpack.optimize.CommonsChunkPlugin async: true
 		new webpack.optimize.DedupePlugin()
-		new webpack.optimize.MinChunkSizePlugin minChunkSize: 10000
-		new webpack.optimize.OccurenceOrderPlugin()
+		new webpack.optimize.OccurenceOrderPlugin true
 		new webpack.optimize.UglifyJsPlugin
 			compress: warnings: false
 			mangle: except: ['$super', '$', 'exports', 'require']
 			output:
 				comments: false
 				screw_ie8: true
+		new webpack.ProgressPlugin (percentage, msg) => console.info parseInt(percentage * 100, 10), msg
+		new webpack.WatchIgnorePlugin [
+			'./conf/'
+			'./includes/'
+			'./node_modules/'
+			# './web/'
+		]
 	]
 	postcss: ->
 		[autoprefixer browsers: ['last 4 versions', '> 5%']]

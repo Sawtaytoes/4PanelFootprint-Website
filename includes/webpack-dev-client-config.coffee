@@ -1,4 +1,6 @@
 autoprefixer = require 'autoprefixer'
+BellOnBundlerErrorPlugin = require 'bell-on-bundler-error-plugin'
+config = require __includes + 'config-settings'
 path = require 'path'
 paths = require __includes + 'paths'
 webpack = require 'webpack'
@@ -8,11 +10,11 @@ entryFile = './' + paths.code.src + 'client'
 p = (dir) ->
 	path.join __base, dir
 
-codeFiles = p(paths.code.src)
-fontFiles = p(paths.assets.src + 'font/')
-imgFiles = p(paths.assets.src + 'img/')
-sassFiles = p(paths.assets.src + 'sass/')
-stylFiles = p(paths.assets.src + 'styl/')
+codeFiles = p paths.code.src
+fontFiles = p paths.assets.src + 'font/'
+imgFiles = p paths.assets.src + 'img/'
+sassFiles = p paths.assets.src + 'sass/'
+stylFiles = p paths.assets.src + 'styl/'
 
 module.exports =
 	cache: true
@@ -20,7 +22,7 @@ module.exports =
 	debug: true
 	devtool: 'eval-source-map'
 	entry: [
-		'webpack-dev-server/client?' + __protocol + '://' + __hostname + ':' + __port
+		'webpack-dev-server/client?' + config.getServerUrl()
 		'webpack/hot/dev-server'
 		entryFile
 	]
@@ -90,12 +92,19 @@ module.exports =
 		pathinfo: true
 		publicPath: '/'
 	plugins: [
-		new webpack.DefinePlugin 'process.env.NODE_ENV': JSON.stringify __env
+		new BellOnBundlerErrorPlugin()
+		new webpack.DefinePlugin 'process.env.NODE_ENV': JSON.stringify config.getEnv()
 		new webpack.HotModuleReplacementPlugin()
 		new webpack.IgnorePlugin /^\.\/locale$/, [/moment$/]
-		new webpack.optimize.OccurenceOrderPlugin true
+		# new webpack.optimize.OccurenceOrderPlugin true
+		new webpack.ProgressPlugin (percentage, msg) => console.info parseInt(percentage * 100, 10), msg
 		new webpack.ProvidePlugin __DEV__: true
-		new webpack.WatchIgnorePlugin ['./node_modules/']
+		new webpack.WatchIgnorePlugin [
+			'./conf/'
+			'./includes/'
+			'./node_modules/'
+			# './web/'
+		]
 	]
 	postcss: ->
 		[autoprefixer browsers: ['last 4 versions', '> 5%']]
