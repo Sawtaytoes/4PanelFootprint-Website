@@ -5,7 +5,7 @@ import { stylesHelper } from 'utilities/styles-helper'
 
 // Styles
 const styles = [
-	require('styl/flex-video')
+	// require('styl/flex-video')
 ]
 
 export default class YouTubeVideo extends Component {

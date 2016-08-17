@@ -1,19 +1,11 @@
 `import { Master } from './layouts'`
 
-removeTrailingSlash = (replace) ->
-	lastCharPos = location.pathname.length - 1
-	lastChar = location.pathname[lastCharPos]
-	replace(location.pathname.slice 0, -1) if lastChar == '/'
-	return
-
 module.exports =
 	path: '/'
 	component: Master
 	onEnter: ({ location }, replace) =>
 
 		## Redirects
-		return if (removeTrailingSlash(replace))
-
 		queryParams = {}
 		location.search
 			.replace '?', ''
@@ -41,6 +33,12 @@ module.exports =
 			return replace '/info'
 
 	childRoutes: [
+
+		## Remove Trailing Slash
+		path: '**/'
+		onEnter: ({ location }, replace) =>
+			replace(location.pathname.slice 0, -1)
+	,
 
 		## Routes
 		path: 'info'
